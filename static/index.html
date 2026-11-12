@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vitória Santos | Finance</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="logo">VS</span>
+        <span class="brand-text">Vitória Santos <small class="finance-label">Finance</small></span>
+      </div>
+      <div class="top-right"><span id="data-hoje" class="date"></span><span class="badge">● Online</span></div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="hero">
+      <div class="hero-left">
+        <img src="/static/foto.jpg" onerror="this.src='https://ui-avatars.com/api/?name=Vitoria+Santos&background=111111&color=fff&size=200'" class="avatar" alt="Vitória Santos">
+        <div>
+          <p class="hello">Olá, Vitória</p>
+          <h1>Seu dinheiro sob controle.</h1>
+          <p class="bio">Acompanhe entradas, saídas e seu saldo em tempo real.</p>
+        </div>
+      </div>
+      <div class="hero-actions">
+        <button class="btn-secondary" onclick="exportarCSV()">Exportar CSV</button>
+        <span class="pill">Python</span><span class="pill">FastAPI</span>
+      </div>
+    </div>
+
+    <div class="resumo-grid">
+      <div class="card saldo-card">
+        <span>Saldo Total</span>
+        <h2 id="saldo">R$ 0,00</h2>
+        <div class="progress"><div id="barra" class="progress-fill"></div></div>
+        <small id="barra-texto">Você guardou 0% do que ganhou</small>
+      </div>
+      <div class="card mini verde"><span>Receitas</span><h2 id="receitas">R$ 0,00</h2><small id="receitas-count">0 entradas</small></div>
+      <div class="card mini terracota"><span>Despesas</span><h2 id="despesas">R$ 0,00</h2><small id="despesas-count">0 saídas</small></div>
+      <div class="card chart-card">
+        <span>Distribuição</span>
+        <canvas id="grafico" width="120" height="120"></canvas>
+        <div class="legend"><span><i class="dot green"></i>Receitas</span><span><i class="dot red"></i>Despesas</span></div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h3>Nova Transação</h3>
+        <p class="subtitle">Registre uma nova movimentação</p>
+        <form id="form">
+          <label>Descrição</label>
+          <input id="descricao" placeholder="Ex: Salário, Mercado..." required>
+          <div class="row2">
+            <div><label>Valor</label><input id="valor" type="number" step="0.01" placeholder="0,00" required></div>
+            <div><label>Tipo</label><select id="tipo"><option value="receita">Receita</option><option value="despesa">Despesa</option></select></div>
+          </div>
+          <label>Categoria</label>
+          <input id="categoria" list="cats" placeholder="Ex: Salário, Alimentação..." required>
+          <datalist id="cats"><option value="Salário"><option value="Alimentação"><option value="Moradia"><option value="Transporte"><option value="Lazer"><option value="Saúde"><option value="Outros"></datalist>
+          <label>Responsável</label>
+          <input id="usuario" value="Vitória Santos" required>
+          <button type="submit">Adicionar Transação</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <div class="list-head">
+          <div><h3>Transações</h3><p class="subtitle">Histórico recente</p></div>
+          <span id="count" class="count">0 itens</span>
+        </div>
+        <input id="busca" placeholder="Buscar por descrição ou categoria..." oninput="carregar()">
+        <div class="filters">
+          <button class="filter-btn active" onclick="setFiltro('todos',this)">Todos</button>
+          <button class="filter-btn" onclick="setFiltro('receita',this)">Receitas</button>
+          <button class="filter-btn" onclick="setFiltro('despesa',this)">Despesas</button>
+        </div>
+        <div id="lista"></div>
+        <div id="empty" class="empty">Nenhuma transação encontrada.<br>Adicione sua primeira movimentação.</div>
+      </div>
+    </div>
+    <footer>Vitória Santos • Finance • © 2026 • Desenvolvido com Python e FastAPI</footer>
+  </div>
+
+<script>
+let filtroAtual = 'todos';
+let todasTransacoes = [];
+function setFiltro(f, btn){
+  filtroAtual = f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  carregar();
+}
+function desenharGrafico(rec, desp){
+  const c = document.getElementById('grafico'); const ctx = c.getContext('2d');
+  const total = rec + desp; ctx.clearRect(0,0,120,120);
+  if(total===0){ ctx.beginPath(); ctx.arc(60,60,45,0,2*Math.PI); ctx.fillStyle='#EDEDED'; ctx.fill(); return; }
+  let start = -Math.PI/2;
+  const partes = [[rec,'#2E7D32'],[desp,'#E2573A']];
+  partes.forEach(([v,cor])=>{
+    const ang = (v/total)*Math.PI*2;
+    ctx.beginPath(); ctx.moveTo(60,60); ctx.arc(60,60,50,start,start+ang); ctx.closePath(); ctx.fillStyle=cor; ctx.fill();
+    start+=ang;
+  });
+  ctx.beginPath(); ctx.arc(60,60,28,0,2*Math.PI); ctx.fillStyle='white'; ctx.fill();
+}
+function exportarCSV(){
+  let csv = 'Descricao,Valor,Tipo,Categoria,Usuario\n';
+  todasTransacoes.forEach(t=>{ csv += `"${t.descricao}",${t.valor},${t.tipo},${t.categoria},${t.usuario}\n`; });
+  const blob = new Blob([csv],{type:'text/csv'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='financeiro-vitoria-santos.csv'; a.click();
+}
+async function carregar(){
+  document.getElementById('data-hoje').innerText = new Date().toLocaleDateString('pt-BR',{weekday:'long', day:'numeric', month:'long'});
+  const r1 = await fetch('/resumo'); const d1 = await r1.json();
+  document.getElementById('saldo').innerText = 'R$ ' + d1.saldo.toFixed(2);
+  document.getElementById('receitas').innerText = 'R$ ' + d1.receitas.toFixed(2);
+  document.getElementById('despesas').innerText = 'R$ ' + Math.abs(d1.despesas).toFixed(2);
+  const pct = d1.receitas>0 ? Math.max(0, Math.round((d1.saldo/d1.receitas)*100)) : 0;
+  document.getElementById('barra').style.width = Math.min(100,pct)+'%';
+  document.getElementById('barra-texto').innerText = `Você guardou ${pct}% do que ganhou`;
+  desenharGrafico(d1.receitas, Math.abs(d1.despesas));
+  const r2 = await fetch('/transacoes'); todasTransacoes = await r2.json();
+  const recCount = todasTransacoes.filter(t=>t.valor>=0).length;
+  const despCount = todasTransacoes.filter(t=>t.valor<0).length;
+  document.getElementById('receitas-count').innerText = recCount + ' entradas';
+  document.getElementById('despesas-count').innerText = despCount + ' saídas';
+  const busca = document.getElementById('busca').value.toLowerCase();
+  let lista = todasTransacoes.filter(t=>{
+    const okFiltro = filtroAtual==='todos' ? true : (filtroAtual==='receita' ? t.valor>=0 : t.valor<0);
+    const okBusca = (t.descricao+' '+t.categoria).toLowerCase().includes(busca);
+    return okFiltro && okBusca;
+  });
+  document.getElementById('count').innerText = lista.length + ' itens';
+  document.getElementById('empty').style.display = lista.length ? 'none':'block';
+  document.getElementById('lista').innerHTML = lista.map(t=>`
+    <div class="item ${t.valor<0?'neg':'pos'}">
+      <div class="item-left"><span class="icon">${t.valor<0?'↓':'↑'}</span><div><b>${t.descricao}</b><small>${t.categoria} • ${t.usuario}</small></div></div>
+      <div style="display:flex;gap:10px;align-items:center"><b>R$ ${t.valor.toFixed(2)}</b><button class="btn-x" onclick="excluir(${t.id})">✕</button></div>
+    </div>`).join('');
+}
+async function excluir(id){ await fetch('/transacoes/'+id,{method:'DELETE'}); carregar(); }
+document.getElementById('form').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const dados={descricao:document.getElementById('descricao').value,valor:parseFloat(document.getElementById('valor').value),tipo:document.getElementById('tipo').value,categoria:document.getElementById('categoria').value,usuario:document.getElementById('usuario').value};
+  await fetch('/transacoes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(dados)});
+  e.target.reset(); document.getElementById('usuario').value='Vitória Santos'; carregar();
+});
+carregar();
+</script>
+</body>
+</html>

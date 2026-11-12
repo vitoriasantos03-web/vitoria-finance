@@ -1,0 +1,63 @@
+*{box-sizing:border-box}
+body{
+  margin:0;background:#F6F5F2;color:#111;
+  /* FONTE DE SITE GRANDE - Inter */
+  font-family:'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+/* TÍTULOS DE SITE GRANDE - Sora */
+h1,h2,h3,.brand-text,.logo,.saldo-card h2,.mini h2{
+  font-family:'Sora', 'Inter', sans-serif;
+  letter-spacing:-0.8px;
+}
+.topbar{background:#fff;border-bottom:1px solid #E8E5DE;position:sticky;top:0;z-index:10}
+.topbar-inner{max-width:1120px;margin:0 auto;padding:18px 20px;display:flex;justify-content:space-between;align-items:center}
+.brand{display:flex;align-items:center;gap:13px}
+.brand-text{font-weight:800;font-size:19px;line-height:1.05;letter-spacing:-0.8px}
+.logo{width:42px;height:42px;border-radius:13px;background:#111;color:#fff;display:grid;place-items:center;font-size:15px;font-weight:800;letter-spacing:0}
+.finance-label{
+  display:block;
+  font-family:'Inter', sans-serif !important;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:4.5px;
+  color:#7A756B;
+  margin-top:4px;
+  text-transform:uppercase;
+}
+.top-right{display:flex;gap:12px;align-items:center}.date{font-size:13px;color:#888;text-transform:capitalize}
+.badge{background:#EAF2E3;color:#4A6B2A;padding:7px 13px;border-radius:999px;font-size:12px;font-weight:600}
+.container{max-width:1120px;margin:0 auto;padding:28px 20px}
+.hero{background:#fff;border:1px solid #E8E5DE;border-radius:24px;padding:28px;display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;gap:20px}
+.hero-left{display:flex;gap:20px;align-items:center}
+.avatar{width:76px;height:76px;border-radius:50%;object-fit:cover;border:3px solid #F6F5F2}
+.hello{margin:0;color:#888;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:1px}.hero h1{margin:6px 0;font-size:30px;letter-spacing:-1.2px;line-height:1.1;font-weight:800}
+.bio{margin:0;color:#666;font-size:15px;line-height:1.5}
+.hero-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.pill{background:#F6F5F2;padding:7px 13px;border-radius:999px;font-size:12px;font-weight:600}
+.btn-secondary{width:auto !important;margin:0 !important;background:#fff !important;color:#111 !important;border:1.5px solid #E8E5DE !important;padding:11px 18px !important;font-weight:600}
+.resumo-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:16px;margin-bottom:20px}
+.card{background:#fff;border:1px solid #E8E5DE;border-radius:20px;padding:22px}
+.card h3{font-size:19px;margin:0;font-weight:700}.subtitle{color:#888;font-size:13px;margin:6px 0 16px}
+.saldo-card{background:#111 !important;color:#fff !important;border-color:#111 !important}
+.saldo-card span{font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:.6;font-weight:600}
+.saldo-card h2{font-size:36px;margin:10px 0 14px;color:#fff !important;font-weight:800;letter-spacing:-1.2px}
+.saldo-card small{opacity:.6;font-size:12px}
+.progress{height:8px;background:rgba(255,255,255,.2);border-radius:99px;overflow:hidden;margin-bottom:10px}.progress-fill{height:100%;background:#34C759;width:0%;transition:.5s;border-radius:99px}
+.mini span{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#888;font-weight:600}.mini h2{font-size:26px;margin:10px 0 4px;font-weight:700}.mini small{color:#888;font-size:12px}
+.mini.verde h2{color:#2E7D32}.mini.terracota h2{color:#E2573A}
+.chart-card{text-align:center}.chart-card span{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#888;font-weight:600}.chart-card canvas{margin:12px auto;display:block}.legend{display:flex;justify-content:center;gap:16px;font-size:12px;color:#666}.dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:4px}.dot.green{background:#2E7D32}.dot.red{background:#E2573A}
+.grid{display:grid;grid-template-columns:1fr 1.4fr;gap:20px}
+label{font-size:12px;font-weight:700;color:#333;display:block;margin:12px 0 6px;text-transform:uppercase;letter-spacing:.5px}
+input,select{width:100%;padding:13px 14px;border:1.5px solid #E8E5DE;border-radius:12px;outline:none;font-family:'Inter',sans-serif;font-size:15px;background:#FBFAF8;font-weight:500}
+input:focus,select:focus{border-color:#111}.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+button{width:100%;padding:15px;border:none;border-radius:12px;background:#111;color:#fff;font-weight:700;font-size:14px;cursor:pointer;margin-top:16px;font-family:'Inter',sans-serif;letter-spacing:-.2px}button:hover{background:#333}
+.list-head{display:flex;justify-content:space-between;align-items:flex-start}.count{background:#F6F5F2;padding:6px 11px;border-radius:999px;font-size:12px;font-weight:600}
+#busca{margin-bottom:12px}.filters{display:flex;gap:8px;margin-bottom:14px}.filter-btn{width:auto !important;margin:0 !important;padding:9px 17px !important;background:#F6F5F2 !important;color:#666 !important;font-size:13px}.filter-btn.active{background:#111 !important;color:#fff !important}
+.item{display:flex;justify-content:space-between;align-items:center;padding:13px 14px;border-radius:14px;background:#FBFAF8;margin-bottom:8px;border-left:4px solid #2E7D32}
+.item.neg{border-left-color:#E2573A}.item small{display:block;color:#888;font-size:12px;margin-top:2px}.item-left{display:flex;gap:11px;align-items:center}.icon{width:34px;height:34px;border-radius:50%;background:#EAF2E3;display:grid;place-items:center;font-weight:700;font-size:14px}.item.neg .icon{background:#FDECEA}
+.btn-x{width:28px !important;height:28px;padding:0 !important;border-radius:50% !important;background:#EFEFEF !important;color:#666 !important;font-size:12px;margin:0 !important}
+.empty{text-align:center;color:#999;padding:30px 0;font-size:14px;line-height:1.6}
+footer{text-align:center;color:#999;font-size:12px;padding:26px 0;letter-spacing:.5px}
+@media(max-width:800px){.resumo-grid{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}.hero{flex-direction:column;text-align:center}.hero-left{flex-direction:column}.hero-actions{justify-content:center}}
+@media(max-width:500px){.resumo-grid{grid-template-columns:1fr}}
